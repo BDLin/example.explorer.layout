@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 
-import nkfust.selab.android.explorer.layout.R;
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.format.TimeFormatUtils;
 import poisondog.string.ExtractFileName;

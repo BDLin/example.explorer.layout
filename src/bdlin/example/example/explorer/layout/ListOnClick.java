@@ -14,46 +14,43 @@
  */
 package bdlin.example.example.explorer.layout;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.vfs.FileType;
 import poisondog.vfs.IFile;
-import poisondog.vfs.LocalData;
 import poisondog.vfs.LocalFolder;
-import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.epapyrus.plugpdf.SimpleDocumentReader;
-import com.epapyrus.plugpdf.SimpleDocumentReaderListener;
-import com.epapyrus.plugpdf.SimpleReaderFactory;
-import com.epapyrus.plugpdf.core.PlugPDF;
-import com.epapyrus.plugpdf.core.PlugPDFException.InvalidLicense;
-import com.epapyrus.plugpdf.core.viewer.DocumentState;
-
 public class ListOnClick implements OnItemClickListener {
 
-	private ContentFragment article;
-	private Context context;
+	private static ContentFragment content;
 	private List<ComplexListItem> array;
 	private View prevView;
 	private SdcardListFragment fileData;
+	private FragmentActivity activity;
 
-	public ListOnClick(ContentFragment article, Context context,
+	public ListOnClick(ContentFragment article, FragmentActivity activity,
 			List<ComplexListItem> array, SdcardListFragment fileData) {
 		this.fileData = fileData;
-		this.article = article;
-		this.context = context;
+		this.activity = activity;
+		content = article;
 		this.array = array;
 	}// End of ListOnClick construct
+	
+	public static void initContent(){
+		content = null;
+	}
+	
+	public static ContentFragment getContent(){
+		return content;
+	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -62,22 +59,20 @@ public class ListOnClick implements OnItemClickListener {
 		try {
 			if (((IFile) array.get(position).getData()).getType() == FileType.DATA) {
 				
+				if(content == null){
+					content = new ContentFragment();
+					content.setIFile((IFile)array.get(position).getData());
+					Bundle args = new Bundle();
+					args.putBoolean("boolean", false);
+					content.setArguments(args);
+					activity.getSupportFragmentManager()
+						    .beginTransaction()
+						    .add(R.id.fragment_container,content)
+						    .addToBackStack(null)
+						    .commit();
+				}else
+					content.updateArticleView((IFile) array.get(position).getData());
 				
-//				TextView text = new TextView(context);
-//				LocalData data = (LocalData) array.get(position).getData();
-//				text.setText(readFromSDcard(data));
-//				text.setTextSize(25);
-//				article.updateArticleView(text);
-				InputStream is = ((LocalData) array.get(position).getData()).getInputStream();
-				int size = is.available();
-				Log.i("ListOnClick", "File Size:" + size);
-                if (size > 0) {
-                	byte[] data = new byte[size];
-                	is.read(data);
-                	open(data);
-                }
-                is.close();
-                
 				if (prevView != null && prevView != view) {
 					prevView.setBackgroundColor(0);
 					view.setBackgroundColor(Color.DKGRAY);
@@ -87,47 +82,11 @@ public class ListOnClick implements OnItemClickListener {
 					prevView = view;
 				}// End of if else-is condition
 			} else {
-				LocalFolder folder = (LocalFolder) array.get(position)
-						.getData();
+				LocalFolder folder = (LocalFolder) array.get(position).getData();
 				fileData.setAdapter(folder.getUrl());
 			}// End of if-else condition
 		} catch (Exception e) {
 			e.printStackTrace();
 		}// End of try-catch
 	}// End of onItemClick Function
-	
-	public void open(byte[] data) {
-		// pdfviewer create.
-		SimpleDocumentReader viewer = SimpleReaderFactory.createSimpleViewer(
-				article.getActivity(), m_listener);
-		article.updateArticleView(viewer.getReaderView());
-		// pdf data load.
-		viewer.openData(data, data.length, "");
- 
-	}
- 
-	// create a listener for receiving provide pdf loading results
-	SimpleDocumentReaderListener m_listener = new SimpleDocumentReaderListener() {
- 
-		@Override
-		public void onLoadFinish(DocumentState.OPEN state) {
-		}
-	};
-
-	private String readFromSDcard(LocalData file) {
-		StringBuilder sb = new StringBuilder();
-		try {
-			InputStream fin = file.getInputStream();
-			byte[] data = new byte[fin.available()];
-			while (fin.read(data) != -1) {
-				sb.append(new String(data));
-			}// End of while loop
-			fin.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}// End try-catch
-		return sb.toString();
-	}// End of readFromSDcard function
 }// End of ListOnClick Class

@@ -16,9 +16,6 @@
  */
 package bdlin.example.example.explorer.layout;
 
-
-
-import nkfust.selab.android.explorer.layout.R;
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.TabFragment;
 import poisondog.string.ExtractParentUrl;
@@ -45,8 +42,13 @@ public class MainActivity extends FragmentActivity {
 		Log.i("MainActivity","onCreate()~~Q_Q");
 		setContentView(R.layout.news_articles);
 		
-		tabView = (TabFragment) getSupportFragmentManager().findFragmentById(
-				R.id.headlines_fragment);
+		if (findViewById(R.id.fragment_container) != null) {
+			tabView = new TabFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, tabView).commit();
+        }else
+        	tabView = (TabFragment) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+		
 		article = (ContentFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.article_fragment);
 
@@ -99,27 +101,31 @@ public class MainActivity extends FragmentActivity {
 	}// End of onOptionsItemSelected
 
 	public void onBackPressed() {
-		if (tabView.getCurrentFragment() == sdFrag) {
-			if (sdFrag.isEqualsRootPath())
-				super.onBackPressed();
-			else
-				try {
-					sdFrag.setAdapter(new ExtractParentUrl().process(sdFrag
-							.getCurrentPath()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		} else if (tabView.getCurrentFragment() == offFrag) {
-			if (offFrag.isEqualsRootPath())
-				super.onBackPressed();
-			else
-				try {
-					offFrag.setAdapter(new ExtractParentUrl().process(offFrag
-							.getCurrentPath()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		} else if (tabView.getCurrentFragment() == presFrag)
+		
+		if(findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null){
+			ListOnClick.initContent();
 			super.onBackPressed();
+		}else{
+			if (tabView.getCurrentFragment() == sdFrag) {
+				if (sdFrag.isEqualsRootPath())
+					super.onBackPressed();
+				else
+					try {
+						sdFrag.setAdapter(new ExtractParentUrl().process(sdFrag.getCurrentPath()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+			} else if (tabView.getCurrentFragment() == offFrag) {
+				if (offFrag.isEqualsRootPath())
+					super.onBackPressed();
+				else
+					try {
+						offFrag.setAdapter(new ExtractParentUrl().process(offFrag.getCurrentPath()));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+			} else if (tabView.getCurrentFragment() == presFrag)
+				super.onBackPressed();
+		}//End of if-else
 	}// End of onBackPressed
 }// End of MainActivity
