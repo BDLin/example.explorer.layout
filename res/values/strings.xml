@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) 2012 The Android Open Source Project
+Copyright (C) 2014 Zi-Xiang Lin <bdl9437@gmail.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">android.explore_layout</string>
+    <string name="setting_category_account">Account</string>
+    <string name="setting_category_setting">Setting</string>
+    <string name="setting_mail">Email</string>
+	<string name="setting_version">Version</string>
+	<string name="setting_release_date">Date</string>
+	<string name="setting_device_id">Device ID</string>
+	<string name="setting_auto_upload">Camera Uploads</string>
+	<string name="setting_auto_upload_open">Current Status：Open</string>
+	<string name="setting_auto_upload_close">Current Status：Close</string>
+	<string name="setting_disk_space">Disk Space</string>
+	<string name="setting_legal_privacy">Legal and Privacy</string>
+	<string name="title_local">Offline Folder</string>
+	<string name="message_erase_offline">Erase all offline file</string>
+	<string name="message_send_folder_keep">Default keep days</string>
+	<string name="title_send_folder_keep">Keep Day</string>
+	<string name="title_erase_offline">Erase</string>
+	<string name="title_logout">Logout</string>
+	<string name="create_folder_title">Create New Folder</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_time">Sort by time</string>
+</resources>
