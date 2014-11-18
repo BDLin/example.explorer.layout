@@ -52,9 +52,19 @@ public class ListOnClick implements OnItemClickListener {
 		return content;
 	}
 
+	public void setFocuseView (View view){
+		if (prevView != null && prevView != view) {
+			prevView.setBackgroundColor(0);
+			view.setBackgroundColor(Color.DKGRAY);
+			prevView = view;
+		} else if (prevView == null) {
+			view.setBackgroundColor(Color.DKGRAY);
+			prevView = view;
+		}// End of if else-is condition
+	}
+	
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 		try {
 			if (((IFile) array.get(position).getData()).getType() == FileType.DATA) {
@@ -63,24 +73,19 @@ public class ListOnClick implements OnItemClickListener {
 					content = new ContentFragment();
 					content.setIFile((IFile)array.get(position).getData());
 					Bundle args = new Bundle();
-					args.putBoolean("boolean", false);
+					args.putInt("position", position);
 					content.setArguments(args);
 					activity.getSupportFragmentManager()
 						    .beginTransaction()
 						    .add(R.id.fragment_container,content)
 						    .addToBackStack(null)
 						    .commit();
-				}else
+				}else{
+					content.setPosition(position);
 					content.updateArticleView((IFile) array.get(position).getData());
-				
-				if (prevView != null && prevView != view) {
-					prevView.setBackgroundColor(0);
-					view.setBackgroundColor(Color.DKGRAY);
-					prevView = view;
-				} else if (prevView == null) {
-					view.setBackgroundColor(Color.DKGRAY);
-					prevView = view;
-				}// End of if else-is condition
+				}// End of inner if-else condition
+					
+				setFocuseView(view);
 			} else {
 				LocalFolder folder = (LocalFolder) array.get(position).getData();
 				fileData.setAdapter(folder.getUrl());

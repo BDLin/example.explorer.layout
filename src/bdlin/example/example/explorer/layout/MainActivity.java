@@ -23,7 +23,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -39,7 +38,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.i("MainActivity","onCreate()~~Q_Q");
 		setContentView(R.layout.news_articles);
 		
 		if (findViewById(R.id.fragment_container) != null) {
@@ -87,7 +85,6 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
 		if (item.getItemId() == R.id.create_folder){
 			new CreateFolder(this, sdFrag).DisplayDialog();
 		}else if (item.getItemId() == R.id.sort_by_name){
@@ -99,16 +96,19 @@ public class MainActivity extends FragmentActivity {
 		}
 		return true;
 	}// End of onOptionsItemSelected
-
+	
 	public void onBackPressed() {
-		
-		if(findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null){
+		if(findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null ){
+			ListOnClick.getContent().ReleaseMusicPlayer();
 			ListOnClick.initContent();
 			super.onBackPressed();
 		}else{
 			if (tabView.getCurrentFragment() == sdFrag) {
-				if (sdFrag.isEqualsRootPath())
+				if (sdFrag.isEqualsRootPath()){
+					if(article != null)
+						article.ReleaseMusicPlayer();
 					super.onBackPressed();
+				}
 				else
 					try {
 						sdFrag.setAdapter(new ExtractParentUrl().process(sdFrag.getCurrentPath()));
@@ -116,16 +116,22 @@ public class MainActivity extends FragmentActivity {
 						e.printStackTrace();
 					}
 			} else if (tabView.getCurrentFragment() == offFrag) {
-				if (offFrag.isEqualsRootPath())
+				if (offFrag.isEqualsRootPath()){
+					if(article != null)
+						article.ReleaseMusicPlayer();
 					super.onBackPressed();
+				}
 				else
 					try {
 						offFrag.setAdapter(new ExtractParentUrl().process(offFrag.getCurrentPath()));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-			} else if (tabView.getCurrentFragment() == presFrag)
+			} else if (tabView.getCurrentFragment() == presFrag){
+				if(article != null)
+					article.ReleaseMusicPlayer();
 				super.onBackPressed();
+			}//End of if-else if
 		}//End of if-else
 	}// End of onBackPressed
 }// End of MainActivity

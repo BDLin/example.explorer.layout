@@ -34,20 +34,15 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	private List<ComplexListItem> array;
 	private ImageButton remoteBtn;
 	private ContentFragment article;
-
 	private String tempPath;
 	private String rootPath;
 
-	public SdcardListFragment(String filePath, ContentFragment article) {
+	public SdcardListFragment(Context context, int img_id,
+			ContentFragment article, String filePath) {
 		rootPath = filePath;
 		tempPath = filePath;
 		this.article = article;
 		array = new ArrayList<ComplexListItem>();
-	}
-
-	public SdcardListFragment(Context context, int img_id,
-			ContentFragment article, String filePath) {
-		this(filePath, article);
 		remoteBtn = new ImageButton(context);
 		remoteBtn.setImageResource(img_id);
 	}
@@ -81,8 +76,7 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		// Set listener of list item
-		getListView().setOnItemClickListener(
-				new ListOnClick(article, getActivity(), array, this));
+		getListView().setOnItemClickListener(new ListOnClick(this.article, getActivity(), array, this));
 	}
 
 	public String getCurrentPath() {
