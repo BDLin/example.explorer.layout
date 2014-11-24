@@ -81,8 +81,7 @@ public class ListOnClick implements OnItemClickListener {
 						    .addToBackStack(null)
 						    .commit();
 				}else{
-					content.setPosition(position);
-					content.updateArticleView((IFile) array.get(position).getData());
+					content.updateArticleView((IFile) array.get(position).getData(), position);
 				}// End of inner if-else condition
 					
 				setFocuseView(view);

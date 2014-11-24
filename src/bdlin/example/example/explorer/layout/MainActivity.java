@@ -17,6 +17,7 @@
 package bdlin.example.example.explorer.layout;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
+import nkfust.selab.android.explorer.layout.model.DecideFileView;
 import nkfust.selab.android.explorer.layout.model.TabFragment;
 import nkfust.selab.android.explorer.layout.model.VideoControllerView;
 import nkfust.selab.android.explorer.layout.model.VideoPlayerView;
@@ -25,7 +26,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,25 +81,12 @@ public class MainActivity extends FragmentActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Checks the orientation of the screen
-		VideoPlayerView video = ListOnClick.getContent().getVideoView();
+		VideoPlayerView video = DecideFileView.getVideoView();
 		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 		if(video != null){
-			if(newConfig.orientation ==Configuration.ORIENTATION_LANDSCAPE){
-		    	 Log.i("LANDSCAPE","getHeight:" + display.getHeight());
-		    	 Log.i("LANDSCAPE","getWidth:" + display.getWidth());
-		    	 Log.i("LANDSCAPE","getHeight:" + article.getView().getHeight());
-		    	 Log.i("LANDSCAPE","getWidth:" + article.getView().getWidth());
-		    }else if(newConfig.orientation ==Configuration.ORIENTATION_PORTRAIT){
-		    	 Log.i("PORTRAIT","getHeight:" + display.getHeight());
-		    	 Log.i("PORTRAIT","getWidth:" + display.getWidth());
-		    	 Log.i("PORTRAIT","getHeight:" + article.getView().getHeight());
-		    	 Log.i("PORTRAIT","getWidth:" + article.getView().getWidth());
-		    }
-			
 			VideoControllerView.setContentSize(display.getHeight(), display.getWidth() * 2 / 3);
 			video.setScreenSize();
 		}
-			
 	}// End of onConfigurationChanged function
 
 	@Override
@@ -125,14 +112,14 @@ public class MainActivity extends FragmentActivity {
 	
 	public void onBackPressed() {
 		if(findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null ){
-			ListOnClick.getContent().ReleaseMediaPlayer();
+			DecideFileView.ReleaseMediaPlayer();
 			ListOnClick.initContent();
 			super.onBackPressed();
 		}else{
 			if (tabView.getCurrentFragment() == sdFrag) {
 				if (sdFrag.isEqualsRootPath()){
 					if(article != null)
-						article.ReleaseMediaPlayer();
+						DecideFileView.ReleaseMediaPlayer();
 					super.onBackPressed();
 				}
 				else
@@ -144,7 +131,7 @@ public class MainActivity extends FragmentActivity {
 			} else if (tabView.getCurrentFragment() == offFrag) {
 				if (offFrag.isEqualsRootPath()){
 					if(article != null)
-						article.ReleaseMediaPlayer();
+						DecideFileView.ReleaseMediaPlayer();
 					super.onBackPressed();
 				}
 				else
@@ -155,7 +142,7 @@ public class MainActivity extends FragmentActivity {
 					}
 			} else if (tabView.getCurrentFragment() == presFrag){
 				if(article != null)
-					article.ReleaseMediaPlayer();
+					DecideFileView.ReleaseMediaPlayer();
 				super.onBackPressed();
 			}//End of if-else if
 		}//End of if-else
