@@ -54,7 +54,6 @@ public class MainActivity extends FragmentActivity {
 		
 		article = (ContentFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.article_fragment);
-		article.setTabFragment(tabView);
 
 		sdFrag = new SdcardListFragment(this, R.drawable.folder_remote,
 				article, Environment.getExternalStorageDirectory()
@@ -65,6 +64,15 @@ public class MainActivity extends FragmentActivity {
 						+ "/Download");
 		presFrag = new PrefsFragment(this, R.drawable.android_settings);
 	}// End of onCreate
+	
+	@Override
+	protected void onPause() {
+	    super.onPause();
+	    if(DecideFileView.getVideoView() != null){
+	    	DecideFileView.getVideoView().pause();
+	    	DecideFileView.getVideoView().stop();
+	    }
+	}
 	
 	@Override
 	public void onStart (){

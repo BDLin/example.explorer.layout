@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
+import nkfust.selab.android.explorer.layout.model.DecideFileView;
+import nkfust.selab.android.explorer.layout.model.MusicPlayerView;
 import nkfust.selab.android.explorer.layout.model.TabView;
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.android.view.list.ImageListAdapter;
@@ -89,12 +91,16 @@ public class SdcardListFragment extends ListFragment implements TabView {
 
 	public void doSortByName() {
 		array = FileDoSort.doSortByName(array);
+		if(DecideFileView.getMusicView() != null)
+			MusicPlayerView.setMusicList(array);
 	}
 
 	public void doSortByTime() {
 		array = FileDoSort.doSortByTime(array);
+		if(DecideFileView.getMusicView() != null)
+			MusicPlayerView.setMusicList(array);
 	}
-
+	
 	public void reloadList() {
 		setListAdapter(new ImageListAdapter(getActivity(), array));
 	}
