@@ -78,7 +78,8 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		// Set listener of list item
-		getListView().setOnItemClickListener(new ListOnClick(this.article, getActivity(), array, this));
+		getListView().setOnItemClickListener(
+				new ListOnClick(this.article, getActivity(), array, this));
 	}
 
 	public String getCurrentPath() {
@@ -91,16 +92,16 @@ public class SdcardListFragment extends ListFragment implements TabView {
 
 	public void doSortByName() {
 		array = FileDoSort.doSortByName(array);
-		if(DecideFileView.getMusicView() != null)
+		if (DecideFileView.getMusicView() != null)
 			MusicPlayerView.setMusicList(array);
 	}
 
 	public void doSortByTime() {
 		array = FileDoSort.doSortByTime(array);
-		if(DecideFileView.getMusicView() != null)
+		if (DecideFileView.getMusicView() != null)
 			MusicPlayerView.setMusicList(array);
 	}
-	
+
 	public void reloadList() {
 		setListAdapter(new ImageListAdapter(getActivity(), array));
 	}

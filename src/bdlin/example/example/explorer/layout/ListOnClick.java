@@ -43,16 +43,16 @@ public class ListOnClick implements OnItemClickListener {
 		content = article;
 		this.array = array;
 	}// End of ListOnClick construct
-	
-	public static void initContent(){
+
+	public static void initContent() {
 		content = null;
 	}
-	
-	public static ContentFragment getContent(){
+
+	public static ContentFragment getContent() {
 		return content;
 	}
 
-	public void setFocuseView (View view){
+	public void setFocuseView(View view) {
 		if (prevView != null && prevView != view) {
 			prevView.setBackgroundColor(0);
 			view.setBackgroundColor(Color.DKGRAY);
@@ -62,30 +62,29 @@ public class ListOnClick implements OnItemClickListener {
 			prevView = view;
 		}// End of if else-is condition
 	}
-	
+
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
 
 		try {
 			if (((IFile) array.get(position).getData()).getType() == FileType.DATA) {
-				
-				if(content == null){
+
+				if (content == null) {
 					content = new ContentFragment();
-					content.setIFile((IFile)array.get(position).getData());
+					content.setIFile((IFile) array.get(position).getData());
 					ContentFragment.setMusicList(array);
 					Bundle args = new Bundle();
 					args.putInt("position", position);
 					content.setArguments(args);
-					activity.getSupportFragmentManager()
-						    .beginTransaction()
-						    .add(R.id.fragment_container,content)
-						    .addToBackStack(null)
-						    .commit();
-				}else{
+					activity.getSupportFragmentManager().beginTransaction()
+							.add(R.id.fragment_container, content)
+							.addToBackStack(null).commit();
+				} else {
 					ContentFragment.setMusicList(array);
 					content.updateArticleView((IFile) array.get(position).getData());
 				}// End of inner if-else condition
-					
+
 				setFocuseView(view);
 			} else {
 				LocalFolder folder = (LocalFolder) array.get(position).getData();

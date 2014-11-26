@@ -35,9 +35,8 @@ public class CreateFolder {
 	public void DisplayDialog() {
 		Builder dialog = new AlertDialog.Builder(context);
 		dialog.setTitle("Create Folder")
-			  .setMessage("Please input the folder name.")
-			  .setView(editText)
-			  .setNegativeButton("Cancel", null)
-			  .setPositiveButton("Done",listener).show();
-	}//End of DisplayDialog function
-}//End of CreateFolder class
+				.setMessage("Please input the folder name.").setView(editText)
+				.setNegativeButton("Cancel", null)
+				.setPositiveButton("Done", listener).show();
+	}// End of DisplayDialog function
+}// End of CreateFolder class

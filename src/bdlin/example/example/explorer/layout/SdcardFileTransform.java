@@ -35,7 +35,6 @@ public class SdcardFileTransform implements ComplexListItem {
 		this.file = file;
 	}
 
-
 	@Override
 	public String getTitle() {
 		try {

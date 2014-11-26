@@ -37,8 +37,10 @@ public class FileDoSort {
 		Collections.sort(array, new Comparator<ComplexListItem>() {
 			@Override
 			public int compare(ComplexListItem lhs, ComplexListItem rhs) {
-				return ((Long)((LocalData)rhs.getData()).getLastModifiedTime()).compareTo(
-						(((Long)((LocalData)lhs.getData()).getLastModifiedTime())));
+				return ((Long) ((LocalData) rhs.getData())
+						.getLastModifiedTime())
+						.compareTo((((Long) ((LocalData) lhs.getData())
+								.getLastModifiedTime())));
 			}
 		});
 		return array;

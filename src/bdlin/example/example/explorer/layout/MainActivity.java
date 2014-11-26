@@ -44,14 +44,15 @@ public class MainActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.news_articles);
-		
+
 		if (findViewById(R.id.fragment_container) != null) {
 			tabView = new TabFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, tabView).commit();
-        }else
-        	tabView = (TabFragment) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
-		
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.fragment_container, tabView).commit();
+		} else
+			tabView = (TabFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.headlines_fragment);
+
 		article = (ContentFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.article_fragment);
 
@@ -64,33 +65,33 @@ public class MainActivity extends FragmentActivity {
 						+ "/Download");
 		presFrag = new PrefsFragment(this, R.drawable.android_settings);
 	}// End of onCreate
-	
+
 	@Override
 	protected void onPause() {
-	    super.onPause();
-	    if(DecideFileView.getVideoView() != null)
-	    	DecideFileView.getVideoView().stop();
+		super.onPause();
+		if (DecideFileView.getVideoView() != null)
+			DecideFileView.getVideoView().stop();
 	}
-	
+
 	@Override
-	public void onStart (){
+	public void onStart() {
 		super.onStart();
-		if(tabView.isFragmentStatePagerAdapterNull()){
+		if (tabView.isFragmentStatePagerAdapterNull()) {
 			tabView.clean();
 			tabView.addTabView(sdFrag);
 			tabView.addTabView(offFrag);
 			tabView.addTabView(presFrag);
 		}
 	}
-	
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Checks the orientation of the screen
 		VideoPlayerView video = DecideFileView.getVideoView();
 		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-		if(video != null){
-			VideoControllerView.setContentSize(display.getHeight(), display.getWidth() * 2 / 3);
+		if (video != null) {
+			VideoControllerView.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
 			video.setScreenSize();
 		}
 	}// End of onConfigurationChanged function
@@ -104,53 +105,51 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.create_folder){
+		if (item.getItemId() == R.id.create_folder) {
 			new CreateFolder(this, sdFrag).DisplayDialog();
-		}else if (item.getItemId() == R.id.sort_by_name){
+		} else if (item.getItemId() == R.id.sort_by_name) {
 			sdFrag.doSortByName();
 			sdFrag.reloadList();
-		}else if (item.getItemId() == R.id.sort_by_time){
+		} else if (item.getItemId() == R.id.sort_by_time) {
 			sdFrag.doSortByTime();
 			sdFrag.reloadList();
 		}
 		return true;
 	}// End of onOptionsItemSelected
-	
+
 	public void onBackPressed() {
-		if(findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null ){
+		if (findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null) {
 			DecideFileView.ReleaseMediaPlayer();
 			ListOnClick.initContent();
 			super.onBackPressed();
-		}else{
+		} else {
 			if (tabView.getCurrentFragment() == sdFrag) {
-				if (sdFrag.isEqualsRootPath()){
-					if(article != null)
+				if (sdFrag.isEqualsRootPath()) {
+					if (article != null)
 						DecideFileView.ReleaseMediaPlayer();
 					super.onBackPressed();
-				}
-				else
+				} else
 					try {
 						sdFrag.setAdapter(new ExtractParentUrl().process(sdFrag.getCurrentPath()));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 			} else if (tabView.getCurrentFragment() == offFrag) {
-				if (offFrag.isEqualsRootPath()){
-					if(article != null)
+				if (offFrag.isEqualsRootPath()) {
+					if (article != null)
 						DecideFileView.ReleaseMediaPlayer();
 					super.onBackPressed();
-				}
-				else
+				} else
 					try {
 						offFrag.setAdapter(new ExtractParentUrl().process(offFrag.getCurrentPath()));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-			} else if (tabView.getCurrentFragment() == presFrag){
-				if(article != null)
+			} else if (tabView.getCurrentFragment() == presFrag) {
+				if (article != null)
 					DecideFileView.ReleaseMediaPlayer();
 				super.onBackPressed();
-			}//End of if-else if
-		}//End of if-else
+			}// End of if-else if
+		}// End of if-else
 	}// End of onBackPressed
 }// End of MainActivity

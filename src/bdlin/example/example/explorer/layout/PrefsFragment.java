@@ -14,7 +14,6 @@
  */
 package bdlin.example.example.explorer.layout;
 
-
 import nkfust.selab.android.explorer.layout.model.TabView;
 import android.content.Context;
 import android.os.Bundle;
