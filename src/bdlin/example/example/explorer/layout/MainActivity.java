@@ -68,10 +68,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 	    super.onPause();
-	    if(DecideFileView.getVideoView() != null){
-	    	DecideFileView.getVideoView().pause();
+	    if(DecideFileView.getVideoView() != null)
 	    	DecideFileView.getVideoView().stop();
-	    }
 	}
 	
 	@Override
