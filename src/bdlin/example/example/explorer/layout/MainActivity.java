@@ -30,6 +30,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 public class MainActivity extends FragmentActivity {
 
@@ -47,6 +48,9 @@ public class MainActivity extends FragmentActivity {
 
 		if (findViewById(R.id.fragment_container) != null) {
 			tabView = new TabFragment();
+			TabFragment.setFrameLayout((FrameLayout)findViewById(R.id.fragment_container));
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.fragment_container, tabView).commit();
 		} else
@@ -91,7 +95,11 @@ public class MainActivity extends FragmentActivity {
 		VideoPlayerView video = DecideFileView.getVideoView();
 		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 		if (video != null) {
-			VideoControllerView.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
+			if (findViewById(R.id.fragment_container) == null) 
+				VideoControllerView.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
+			else
+				VideoControllerView.setContentSize(display.getHeight(),display.getWidth());
+			
 			video.setScreenSize();
 		}
 	}// End of onConfigurationChanged function
@@ -119,6 +127,7 @@ public class MainActivity extends FragmentActivity {
 
 	public void onBackPressed() {
 		if (findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null) {
+			getActionBar().show();
 			DecideFileView.ReleaseMediaPlayer();
 			ListOnClick.initContent();
 			super.onBackPressed();
