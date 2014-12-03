@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+			android:id="@+id/sort_by_name"
+			android:icon="@drawable/sort_ascend"
+			android:title="@string/sort_by_name"
+			android:showAsAction="ifRoom|withText"
+	/>
+    <item
+			android:id="@+id/sort_by_time"
+			android:icon="@drawable/numerical_sorting2"
+			android:title="@string/sort_by_time"
+			android:showAsAction="ifRoom|withText"
+	/>
+
+</menu>

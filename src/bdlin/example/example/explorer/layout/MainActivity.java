@@ -67,7 +67,7 @@ public class MainActivity extends FragmentActivity {
 				R.drawable.download_folder_small_icon, R.menu.customer_menu1, article, Environment
 						.getExternalStorageDirectory().getAbsolutePath()
 						+ "/Download");
-		presFrag = new PrefsFragment(this, R.drawable.android_settings, R.menu.customer_menu1);
+		presFrag = new PrefsFragment(this, R.drawable.android_settings, R.menu.customer_menu2);
 	}// End of onCreate
 
 	@Override
@@ -104,15 +104,9 @@ public class MainActivity extends FragmentActivity {
 		}
 	}// End of onConfigurationChanged function
 	
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.title_file_list, menu);
-//		return true;
-//	}
-	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu){
-		TabFragment.setMenu(menu);
+		tabView.setMenu(menu);
 		getMenuInflater().inflate(R.menu.title_file_list, menu);
 		return true;
 	}
