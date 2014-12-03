@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import poisondog.android.view.list.ComplexListItem;
-import poisondog.vfs.LocalData;
 
 public class FileDoSort {
 
@@ -37,10 +36,8 @@ public class FileDoSort {
 		Collections.sort(array, new Comparator<ComplexListItem>() {
 			@Override
 			public int compare(ComplexListItem lhs, ComplexListItem rhs) {
-				return ((Long) ((LocalData) rhs.getData())
-						.getLastModifiedTime())
-						.compareTo((((Long) ((LocalData) lhs.getData())
-								.getLastModifiedTime())));
+				return ((SdcardFileTransform) rhs).getTime().compareTo(
+						((SdcardFileTransform) lhs).getTime());
 			}
 		});
 		return array;

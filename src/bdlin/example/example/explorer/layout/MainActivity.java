@@ -61,12 +61,9 @@ public class MainActivity extends FragmentActivity {
 				.findFragmentById(R.id.article_fragment);
 
 		sdFrag = new SdcardListFragment(this, R.drawable.folder_remote, R.menu.title_file_list,
-				article, Environment.getExternalStorageDirectory()
-						.getAbsolutePath());
-		offFrag = new SdcardListFragment(this,
-				R.drawable.download_folder_small_icon, R.menu.customer_menu1, article, Environment
-						.getExternalStorageDirectory().getAbsolutePath()
-						+ "/Download");
+				article, Environment.getExternalStorageDirectory().getAbsolutePath());
+		offFrag = new SdcardListFragment(this, R.drawable.download_folder_small_icon, R.menu.customer_menu1, 
+				article, Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download");
 		presFrag = new PrefsFragment(this, R.drawable.android_settings, R.menu.customer_menu2);
 	}// End of onCreate
 
@@ -113,14 +110,26 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.create_folder) {
-			new CreateFolder(this, sdFrag).DisplayDialog();
-		} else if (item.getItemId() == R.id.sort_by_name) {
-			sdFrag.doSortByName();
-			sdFrag.reloadList();
-		} else if (item.getItemId() == R.id.sort_by_time) {
-			sdFrag.doSortByTime();
-			sdFrag.reloadList();
+		switch (item.getItemId()){
+			case R.id.create_folder:
+				new CreateFolder(this, sdFrag).DisplayDialog();
+				break;
+			case R.id.sort_by_name:
+				sdFrag.doSortByName();
+				sdFrag.reloadList();
+				break;
+			case R.id.sort_by_time:
+				sdFrag.doSortByTime();
+				sdFrag.reloadList();
+				break;
+			case R.id.local_sort_by_name:
+				offFrag.doSortByName();
+				offFrag.reloadList();
+				break;
+			case R.id.local_sort_by_time:
+				offFrag.doSortByTime();
+				offFrag.reloadList();
+				break;
 		}
 		return true;
 	}// End of onOptionsItemSelected
