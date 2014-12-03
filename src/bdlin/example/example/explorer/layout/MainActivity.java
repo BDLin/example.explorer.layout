@@ -60,14 +60,14 @@ public class MainActivity extends FragmentActivity {
 		article = (ContentFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.article_fragment);
 
-		sdFrag = new SdcardListFragment(this, R.drawable.folder_remote,
+		sdFrag = new SdcardListFragment(this, R.drawable.folder_remote, R.menu.title_file_list,
 				article, Environment.getExternalStorageDirectory()
 						.getAbsolutePath());
 		offFrag = new SdcardListFragment(this,
-				R.drawable.download_folder_small_icon, article, Environment
+				R.drawable.download_folder_small_icon, R.menu.customer_menu1, article, Environment
 						.getExternalStorageDirectory().getAbsolutePath()
 						+ "/Download");
-		presFrag = new PrefsFragment(this, R.drawable.android_settings);
+		presFrag = new PrefsFragment(this, R.drawable.android_settings, R.menu.customer_menu1);
 	}// End of onCreate
 
 	@Override
@@ -103,11 +103,17 @@ public class MainActivity extends FragmentActivity {
 			video.setScreenSize();
 		}
 	}// End of onConfigurationChanged function
-
+	
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.title_file_list, menu);
+//		return true;
+//	}
+	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onPrepareOptionsMenu(Menu menu){
+		TabFragment.setMenu(menu);
 		getMenuInflater().inflate(R.menu.title_file_list, menu);
-		super.onCreateOptionsMenu(menu);
 		return true;
 	}
 

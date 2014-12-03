@@ -24,10 +24,12 @@ import android.widget.ImageButton;
 public class PrefsFragment extends PreferenceFragment implements TabView {
 
 	private ImageButton settingBtn;
+	private int menuRes;
 
-	public PrefsFragment(Context context, int img_id) {
+	public PrefsFragment(Context context, int img_id, int menuRes) {
 		settingBtn = new ImageButton(context);
 		settingBtn.setImageResource(img_id);
+		this.menuRes = menuRes;
 	}
 
 	@Override
@@ -45,5 +47,10 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 	@Override
 	public Fragment getFragment() {
 		return this;
+	}
+
+	@Override
+	public int getMenuResource() {
+		return menuRes;
 	}
 }

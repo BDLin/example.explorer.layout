@@ -85,7 +85,7 @@ public class ListOnClick implements OnItemClickListener {
 					content.updateArticleView((IFile) array.get(position).getData());
 				}// End of inner if-else condition
 
-				setFocuseView(view);
+				//setFocuseView(view);
 			} else {
 				LocalFolder folder = (LocalFolder) array.get(position).getData();
 				fileData.setAdapter(folder.getUrl());
