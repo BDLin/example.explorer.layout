@@ -29,6 +29,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 
 public class SdcardListFragment extends ListFragment implements TabView {
@@ -75,7 +76,7 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	public ImageButton getIndexButton() {
 		return remoteBtn;
 	}
-
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -116,5 +117,25 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	@Override
 	public int getMenuResource() {
 		return menuRes;
+	}
+	
+	@Override
+	public boolean onOptionsMenuItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.create_folder:
+				new CreateFolder(getActivity(), this).DisplayDialog();
+				break;
+			case R.id.sort_by_name:
+			case R.id.local_sort_by_name:
+				doSortByName();
+				reloadList();
+				break;
+			case R.id.sort_by_time:
+			case R.id.local_sort_by_time:
+				doSortByTime();
+				reloadList();
+				break;
+		}
+		return true;
 	}
 }

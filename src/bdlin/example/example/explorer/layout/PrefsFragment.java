@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.preference.PreferenceFragment;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 
 public class PrefsFragment extends PreferenceFragment implements TabView {
@@ -52,5 +53,11 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 	@Override
 	public int getMenuResource() {
 		return menuRes;
+	}
+
+	@Override
+	public boolean onOptionsMenuItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

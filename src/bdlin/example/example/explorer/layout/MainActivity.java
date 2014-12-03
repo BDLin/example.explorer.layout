@@ -110,28 +110,7 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case R.id.create_folder:
-				new CreateFolder(this, sdFrag).DisplayDialog();
-				break;
-			case R.id.sort_by_name:
-				sdFrag.doSortByName();
-				sdFrag.reloadList();
-				break;
-			case R.id.sort_by_time:
-				sdFrag.doSortByTime();
-				sdFrag.reloadList();
-				break;
-			case R.id.local_sort_by_name:
-				offFrag.doSortByName();
-				offFrag.reloadList();
-				break;
-			case R.id.local_sort_by_time:
-				offFrag.doSortByTime();
-				offFrag.reloadList();
-				break;
-		}
-		return true;
+		return tabView.getCurrentTabView().onOptionsMenuItemSelected(item);
 	}// End of onOptionsItemSelected
 
 	public void onBackPressed() {
