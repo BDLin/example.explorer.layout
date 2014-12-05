@@ -83,6 +83,7 @@ public class MainActivity extends FragmentActivity {
 			tabView.addTabView(offFrag);
 			tabView.addTabView(presFrag);
 		}
+		setContentSize();
 	}
 
 	@Override
@@ -90,13 +91,8 @@ public class MainActivity extends FragmentActivity {
 		super.onConfigurationChanged(newConfig);
 		// Checks the orientation of the screen
 		VideoPlayerView video = DecideFileView.getVideoView();
-		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 		if (video != null) {
-			if (findViewById(R.id.fragment_container) == null) 
-				VideoControllerView.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
-			else
-				VideoControllerView.setContentSize(display.getHeight(),display.getWidth());
-			
+			setContentSize();
 			video.setScreenSize();
 		}
 	}// End of onConfigurationChanged function
@@ -149,4 +145,12 @@ public class MainActivity extends FragmentActivity {
 			}// End of if-else if
 		}// End of if-else
 	}// End of onBackPressed
+	
+	public void setContentSize(){
+		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+		if (findViewById(R.id.fragment_container) == null) 
+			VideoControllerView.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
+		else
+			VideoControllerView.setContentSize(display.getHeight(),display.getWidth());
+	}
 }// End of MainActivity

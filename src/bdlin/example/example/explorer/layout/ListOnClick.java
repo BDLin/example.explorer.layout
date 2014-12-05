@@ -73,7 +73,7 @@ public class ListOnClick implements OnItemClickListener {
 				if (content == null) {
 					content = new ContentFragment();
 					content.setIFile((IFile) array.get(position).getData());
-					ContentFragment.setMusicList(array);
+					content.setMusicList(array);
 					Bundle args = new Bundle();
 					args.putInt("position", position);
 					content.setArguments(args);
@@ -81,7 +81,7 @@ public class ListOnClick implements OnItemClickListener {
 							.add(R.id.fragment_container, content)
 							.addToBackStack(null).commit();
 				} else {
-					ContentFragment.setMusicList(array);
+					content.setMusicList(array);
 					content.updateArticleView((IFile) array.get(position).getData());
 				}// End of inner if-else condition
 

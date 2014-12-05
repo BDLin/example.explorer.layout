@@ -20,6 +20,7 @@ import java.util.List;
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.DecideFileView;
 import nkfust.selab.android.explorer.layout.model.MusicPlayerView;
+import nkfust.selab.android.explorer.layout.model.SongsManager;
 import nkfust.selab.android.explorer.layout.model.TabView;
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.android.view.list.ImageListAdapter;
@@ -69,7 +70,8 @@ public class SdcardListFragment extends ListFragment implements TabView {
 		for (IFile file : fileData.getFileList())
 			if (!file.isHidden())
 				array.add(new SdcardFileTransform(file));
-
+		
+		updateMusicList();
 		reloadList();
 	}
 
@@ -92,16 +94,20 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	public Boolean isEqualsRootPath() {
 		return new ExtractPath().process(tempPath).equals(rootPath);
 	}
-
+	
 	public void doSortByName() {
 		array = FileDoSort.doSortByName(array);
-		if (DecideFileView.getMusicView() != null)
-			MusicPlayerView.setMusicList(array);
+		updateMusicList();
 	}
 
 	public void doSortByTime() {
 		array = FileDoSort.doSortByTime(array);
-		if (DecideFileView.getMusicView() != null)
+		updateMusicList();
+	}
+	
+	public void updateMusicList(){
+		if (DecideFileView.getMusicView() != null && 
+				new ExtractPath().process(tempPath).equals(SongsManager.getmusicDataPath()))
 			MusicPlayerView.setMusicList(array);
 	}
 
@@ -126,12 +132,10 @@ public class SdcardListFragment extends ListFragment implements TabView {
 				new CreateFolder(getActivity(), this).DisplayDialog();
 				break;
 			case R.id.sort_by_name:
-			case R.id.local_sort_by_name:
 				doSortByName();
 				reloadList();
 				break;
 			case R.id.sort_by_time:
-			case R.id.local_sort_by_time:
 				doSortByTime();
 				reloadList();
 				break;
