@@ -21,14 +21,13 @@ limitations under the License.
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+    
     <fragment android:name="nkfust.selab.android.explorer.layout.model.TabFragment"
               android:id="@+id/headlines_fragment"
               android:layout_weight="1"
-              android:layout_width="0dp"
-              android:layout_height="match_parent" >
-              
-    </fragment>
+        	  android:layout_width="0dp"
+        	  android:layout_height="match_parent"
+              />
 
     <fragment android:name="nkfust.selab.android.explorer.layout.model.ContentFragment"
               android:id="@+id/article_fragment"

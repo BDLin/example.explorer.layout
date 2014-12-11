@@ -27,13 +27,22 @@ import poisondog.android.view.list.ImageListAdapter;
 import poisondog.string.ExtractPath;
 import poisondog.vfs.IFile;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
-public class SdcardListFragment extends ListFragment implements TabView {
+import com.handmark.pulltorefresh.extras.listfragment.PullToRefreshListFragment;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
+public class SdcardListFragment extends PullToRefreshListFragment implements TabView, OnRefreshListener<ListView>{
 
 	private List<ComplexListItem> array;
 	private ImageButton remoteBtn;
@@ -41,6 +50,8 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	private String tempPath;
 	private String rootPath;
 	private int menuRes;
+	
+	private PullToRefreshListView mPullRefreshListView;
 
 	public SdcardListFragment(Context context, int img_id, int menuRes,
 			ContentFragment article, String filePath) {
@@ -53,15 +64,17 @@ public class SdcardListFragment extends ListFragment implements TabView {
 		this.menuRes = menuRes;
 	}
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		try {
 			setAdapter(tempPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void setAdapter(String path) throws Exception {
 		array.clear();
 		tempPath = path;
@@ -85,6 +98,12 @@ public class SdcardListFragment extends ListFragment implements TabView {
 		// Set listener of list item
 		getListView().setOnItemClickListener(
 				new ListOnClick(this.article, getActivity(), array, this));
+		// Get PullToRefreshListView from Fragment
+		mPullRefreshListView = getPullToRefreshListView();
+
+		// Set a listener to be invoked when the list should be refreshed.
+		mPullRefreshListView.setOnRefreshListener(this);
+		setListShown(true);
 	}
 	
 	public String getCurrentPath() {
@@ -126,6 +145,15 @@ public class SdcardListFragment extends ListFragment implements TabView {
 	}
 	
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		menu.clear();
+		inflater.inflate(menuRes, menu);
+	}
+	
+	@Override
+	public void onPrepareOptionsMenu(Menu menu){}
+	
+	@Override
 	public boolean onOptionsMenuItemSelected(MenuItem item) {
 		switch (item.getItemId()){
 			case R.id.create_folder:
@@ -141,5 +169,32 @@ public class SdcardListFragment extends ListFragment implements TabView {
 				break;
 		}
 		return true;
+	}
+
+	@Override
+	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+		// Do work to refresh the list here.
+		Log.i("SdCard", "listView refresh!!");
+		new GetDataTask().execute();
+	}
+	
+	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+		@Override
+		protected String[] doInBackground(Void... params) {
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(String[] result) {
+
+			// Call onRefreshComplete when the list has been refreshed.
+			mPullRefreshListView.onRefreshComplete();
+			super.onPostExecute(result);
+		}
 	}
 }

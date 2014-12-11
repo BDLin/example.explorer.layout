@@ -24,6 +24,7 @@ import poisondog.vfs.LocalFolder;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -64,9 +65,9 @@ public class ListOnClick implements OnItemClickListener {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		position = position - 1;
+		Log.i("ListOnClick", "position:" + position);
 		try {
 			if (((IFile) array.get(position).getData()).getType() == FileType.DATA) {
 

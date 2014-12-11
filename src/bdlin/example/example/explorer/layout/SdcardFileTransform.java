@@ -93,7 +93,7 @@ public class SdcardFileTransform implements ComplexListItem {
 	public void setImage(ImageView view) {
 		try {
 			if (file.getType() == FileType.DATA)
-				view.setImageResource(R.drawable.file);
+				view.setImageResource(R.drawable.file_blue_48);
 			else {
 				LocalFolder folder = (LocalFolder) file;
 				if (folder.getChildren().size() == 0)
