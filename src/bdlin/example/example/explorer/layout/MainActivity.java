@@ -17,22 +17,22 @@
 package bdlin.example.example.explorer.layout;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
-import nkfust.selab.android.explorer.layout.model.DecideFileView;
 import nkfust.selab.android.explorer.layout.model.TabFragment;
-import nkfust.selab.android.explorer.layout.model.VideoControllerView;
-import nkfust.selab.android.explorer.layout.model.VideoPlayerView;
+import nkfust.selab.android.explorer.layout.processer.SetScreenSize;
+import nkfust.selab.android.explorer.layout.view.DecideFileView;
+import nkfust.selab.android.explorer.layout.view.VideoPlayerView;
 import poisondog.string.ExtractParentUrl;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends ActionBarActivity {
 
 	private TabFragment tabView;
 	private ContentFragment article;
@@ -48,7 +48,7 @@ public class MainActivity extends FragmentActivity {
 
 		if (findViewById(R.id.fragment_container) != null) {
 			tabView = new TabFragment();
-			TabFragment.setFrameLayout((FrameLayout)findViewById(R.id.fragment_container));
+			tabView.setFrameLayout((FrameLayout)findViewById(R.id.fragment_container));
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			getSupportFragmentManager().beginTransaction()
@@ -70,8 +70,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (DecideFileView.getVideoView() != null)
-			DecideFileView.getVideoView().stop();
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class MainActivity extends FragmentActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Checks the orientation of the screen
-		VideoPlayerView video = DecideFileView.getVideoView();
+		VideoPlayerView video = article.getVideoView();
 		if (video != null) {
 			setContentSize();
 			video.setScreenSize();
@@ -104,26 +102,24 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu){
-		return true;
-	}
-	
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return tabView.getCurrentTabView().onOptionsMenuItemSelected(item);
 	}// End of onOptionsItemSelected
+	
+	@Override
+	protected void onDestroy () {
+		super.onDestroy();
+	}
 
 	public void onBackPressed() {
 		if (findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null) {
-			getActionBar().show();
-			DecideFileView.ReleaseMediaPlayer();
+			getSupportActionBar().show();
+			getSupportFragmentManager().beginTransaction().show(TabFragment.getTabFragment()).commit();
 			ListOnClick.initContent();
 			super.onBackPressed();
 		} else {
 			if (tabView.getCurrentFragment() == sdFrag) {
 				if (sdFrag.isEqualsRootPath()) {
-					if (article != null)
-						DecideFileView.ReleaseMediaPlayer();
 					super.onBackPressed();
 				} else
 					try {
@@ -133,8 +129,6 @@ public class MainActivity extends FragmentActivity {
 					}
 			} else if (tabView.getCurrentFragment() == offFrag) {
 				if (offFrag.isEqualsRootPath()) {
-					if (article != null)
-						DecideFileView.ReleaseMediaPlayer();
 					super.onBackPressed();
 				} else
 					try {
@@ -143,8 +137,6 @@ public class MainActivity extends FragmentActivity {
 						e.printStackTrace();
 					}
 			} else if (tabView.getCurrentFragment() == presFrag) {
-				if (article != null)
-					DecideFileView.ReleaseMediaPlayer();
 				super.onBackPressed();
 			}// End of if-else if
 		}// End of if-else
@@ -153,8 +145,8 @@ public class MainActivity extends FragmentActivity {
 	public void setContentSize(){
 		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 		if (findViewById(R.id.fragment_container) == null) 
-			VideoControllerView.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
+			SetScreenSize.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
 		else
-			VideoControllerView.setContentSize(display.getHeight(),display.getWidth());
+			SetScreenSize.setContentSize(display.getHeight(),display.getWidth());
 	}
 }// End of MainActivity

@@ -21,6 +21,7 @@ import java.net.URLDecoder;
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.format.TimeFormatUtils;
 import poisondog.string.ExtractFileName;
+import poisondog.string.ExtractPath;
 import poisondog.vfs.FileType;
 import poisondog.vfs.IFile;
 import poisondog.vfs.LocalFolder;
@@ -45,15 +46,10 @@ public class SdcardFileTransform implements ComplexListItem {
 		return "";
 	}
 
-	public IFile getFile() {
-		return this.file;
-	}
-
 	public Long getTime() {
 		try {
 			return file.getLastModifiedTime();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return new Long(0);
@@ -65,14 +61,17 @@ public class SdcardFileTransform implements ComplexListItem {
 	}
 
 	@Override
-	public IFile getData() {
-		return this.file;
+	public String getData() {
+		try {
+			return new ExtractPath().process(URLDecoder.decode(file.getUrl()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
-	public void setData(Object object) {
-
-	}
+	public void setData(Object object) {}
 
 	@Override
 	public void setSubTitle(TextView view) {
@@ -85,9 +84,7 @@ public class SdcardFileTransform implements ComplexListItem {
 	}
 
 	@Override
-	public void setComment(TextView view) {
-
-	}
+	public void setComment(TextView view) {}
 
 	@Override
 	public void setImage(ImageView view) {
@@ -111,7 +108,5 @@ public class SdcardFileTransform implements ComplexListItem {
 	}// End of setImage function
 
 	@Override
-	public void setState(ImageView view) {
-
-	}
+	public void setState(ImageView view) {}
 }

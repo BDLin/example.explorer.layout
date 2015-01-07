@@ -14,60 +14,51 @@
  */
 package bdlin.example.example.explorer.layout;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
-import nkfust.selab.android.explorer.layout.model.DecideFileView;
-import nkfust.selab.android.explorer.layout.model.MusicPlayerView;
-import nkfust.selab.android.explorer.layout.model.SongsManager;
 import nkfust.selab.android.explorer.layout.model.TabView;
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.android.view.list.ImageListAdapter;
 import poisondog.string.ExtractPath;
 import poisondog.vfs.IFile;
+import poisondog.vfs.LocalFileFactory;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.support.v4.app.ListFragment;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
-import com.handmark.pulltorefresh.extras.listfragment.PullToRefreshListFragment;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
-public class SdcardListFragment extends PullToRefreshListFragment implements TabView, OnRefreshListener<ListView>{
+public class SdcardListFragment extends ListFragment implements TabView{
 
 	private List<ComplexListItem> array;
+	private List<IFile> iFileList;
 	private ImageButton remoteBtn;
-	private ContentFragment article;
+	private ContentFragment mContent;
 	private String tempPath;
 	private String rootPath;
 	private int menuRes;
 	
-	private PullToRefreshListView mPullRefreshListView;
-
 	public SdcardListFragment(Context context, int img_id, int menuRes,
-			ContentFragment article, String filePath) {
+			ContentFragment content, String filePath) {
+		this.menuRes = menuRes;
+		mContent = content;
 		rootPath = filePath;
 		tempPath = filePath;
-		this.article = article;
 		array = new ArrayList<ComplexListItem>();
+		iFileList = new ArrayList<IFile>();
 		remoteBtn = new ImageButton(context);
 		remoteBtn.setImageResource(img_id);
-		this.menuRes = menuRes;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 		try {
 			setAdapter(tempPath);
 		} catch (Exception e) {
@@ -75,35 +66,29 @@ public class SdcardListFragment extends PullToRefreshListFragment implements Tab
 		}
 	}
 	
+	@Override
+	public void onViewCreated (View view, Bundle savedInstanceState){
+		super.onViewCreated(view, savedInstanceState);
+		// Set listener of list item
+		getListView().setOnItemClickListener(new ListOnClick(mContent, getActivity(), this));
+	}
+	
 	public void setAdapter(String path) throws Exception {
 		array.clear();
 		tempPath = path;
 		SdcardFileData fileData = new SdcardFileData(path);
-
+		
 		for (IFile file : fileData.getFileList())
 			if (!file.isHidden())
 				array.add(new SdcardFileTransform(file));
 		
+		refreshIFileList(array);
 		updateMusicList();
 		reloadList();
 	}
 
 	public ImageButton getIndexButton() {
 		return remoteBtn;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		// Set listener of list item
-		getListView().setOnItemClickListener(
-				new ListOnClick(this.article, getActivity(), array, this));
-		// Get PullToRefreshListView from Fragment
-		mPullRefreshListView = getPullToRefreshListView();
-
-		// Set a listener to be invoked when the list should be refreshed.
-		mPullRefreshListView.setOnRefreshListener(this);
-		setListShown(true);
 	}
 	
 	public String getCurrentPath() {
@@ -116,22 +101,41 @@ public class SdcardListFragment extends PullToRefreshListFragment implements Tab
 	
 	public void doSortByName() {
 		array = FileDoSort.doSortByName(array);
+		refreshIFileList(array);
 		updateMusicList();
 	}
 
 	public void doSortByTime() {
 		array = FileDoSort.doSortByTime(array);
+		refreshIFileList(array);
 		updateMusicList();
 	}
 	
+	public void refreshIFileList(List<ComplexListItem> array){
+		iFileList.clear();
+		for(ComplexListItem item : array){
+			try {
+				iFileList.add(new LocalFileFactory().getFile((String)item.getData()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void updateMusicList(){
-		if (DecideFileView.getMusicView() != null && 
-				new ExtractPath().process(tempPath).equals(SongsManager.getmusicDataPath()))
-			MusicPlayerView.setMusicList(array);
+		if (mContent.getMusicView() != null && 
+				new ExtractPath().process(tempPath).equals(mContent.getMusicView().getSongsPath()))
+			mContent.updateIFileList(iFileList);
 	}
 
 	public void reloadList() {
 		setListAdapter(new ImageListAdapter(getActivity(), array));
+	}
+	
+	public List<IFile> getIFileList(){
+		return iFileList;
 	}
 
 	@Override
@@ -143,15 +147,6 @@ public class SdcardListFragment extends PullToRefreshListFragment implements Tab
 	public int getMenuResource() {
 		return menuRes;
 	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		menu.clear();
-		inflater.inflate(menuRes, menu);
-	}
-	
-	@Override
-	public void onPrepareOptionsMenu(Menu menu){}
 	
 	@Override
 	public boolean onOptionsMenuItemSelected(MenuItem item) {
@@ -169,32 +164,5 @@ public class SdcardListFragment extends PullToRefreshListFragment implements Tab
 				break;
 		}
 		return true;
-	}
-
-	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-		// Do work to refresh the list here.
-		Log.i("SdCard", "listView refresh!!");
-		new GetDataTask().execute();
-	}
-	
-	private class GetDataTask extends AsyncTask<Void, Void, String[]> {
-
-		@Override
-		protected String[] doInBackground(Void... params) {
-			try {
-				Thread.sleep(4000);
-			} catch (InterruptedException e) {
-			}
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(String[] result) {
-
-			// Call onRefreshComplete when the list has been refreshed.
-			mPullRefreshListView.onRefreshComplete();
-			super.onPostExecute(result);
-		}
 	}
 }

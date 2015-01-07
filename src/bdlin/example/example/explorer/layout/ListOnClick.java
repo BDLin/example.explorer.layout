@@ -14,85 +14,68 @@
  */
 package bdlin.example.example.explorer.layout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
-import poisondog.android.view.list.ComplexListItem;
 import poisondog.vfs.FileType;
 import poisondog.vfs.IFile;
 import poisondog.vfs.LocalFolder;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ListOnClick implements OnItemClickListener {
 
-	private static ContentFragment content;
-	private List<ComplexListItem> array;
-	private View prevView;
+	private static ContentFragment aContent;
 	private SdcardListFragment fileData;
 	private FragmentActivity activity;
 
 	public ListOnClick(ContentFragment article, FragmentActivity activity,
-			List<ComplexListItem> array, SdcardListFragment fileData) {
+			SdcardListFragment fileData) {
 		this.fileData = fileData;
 		this.activity = activity;
-		content = article;
-		this.array = array;
+		aContent = article;
 	}// End of ListOnClick construct
-
-	public static void initContent() {
-		content = null;
-	}
-
-	public static ContentFragment getContent() {
-		return content;
-	}
-
-	public void setFocuseView(View view) {
-		if (prevView != null && prevView != view) {
-			prevView.setBackgroundColor(0);
-			view.setBackgroundColor(Color.DKGRAY);
-			prevView = view;
-		} else if (prevView == null) {
-			view.setBackgroundColor(Color.DKGRAY);
-			prevView = view;
-		}// End of if else-is condition
-	}
-
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		position = position - 1;
-		Log.i("ListOnClick", "position:" + position);
+		List<IFile> aIFileArray = new ArrayList<IFile>();
+		aIFileArray.addAll(fileData.getIFileList());
 		try {
-			if (((IFile) array.get(position).getData()).getType() == FileType.DATA) {
+			if (aIFileArray.get(position).getType() == FileType.DATA) {
 
-				if (content == null) {
-					content = new ContentFragment();
-					content.setIFile((IFile) array.get(position).getData());
-					content.setMusicList(array);
+				if (aContent == null) {
+					aContent = new ContentFragment();
+					aContent.setIFile(aIFileArray.get(position));
+					aContent.setIFileList(aIFileArray);
 					Bundle args = new Bundle();
 					args.putInt("position", position);
-					content.setArguments(args);
+					aContent.setArguments(args);
 					activity.getSupportFragmentManager().beginTransaction()
-							.add(R.id.fragment_container, content)
+							.add(R.id.fragment_container, aContent)
 							.addToBackStack(null).commit();
 				} else {
-					content.setMusicList(array);
-					content.updateArticleView((IFile) array.get(position).getData());
+					aContent.setIFileList(aIFileArray);
+					aContent.updateArticleView(aIFileArray.get(position));
 				}// End of inner if-else condition
 
-				//setFocuseView(view);
 			} else {
-				LocalFolder folder = (LocalFolder) array.get(position).getData();
+				LocalFolder folder = (LocalFolder) aIFileArray.get(position);
 				fileData.setAdapter(folder.getUrl());
 			}// End of if-else condition
 		} catch (Exception e) {
 			e.printStackTrace();
 		}// End of try-catch
 	}// End of onItemClick Function
+	
+	public static void initContent() {
+		aContent = null;
+	}
+	
+	public static ContentFragment getContent() {
+		return aContent;
+	}
 }// End of ListOnClick Class

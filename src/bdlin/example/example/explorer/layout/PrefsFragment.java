@@ -19,8 +19,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.preference.PreferenceFragment;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
@@ -39,7 +37,6 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 		// Load the preferences from an XML resource
 		addPreferencesFromResource(R.xml.preferences);
 	}
@@ -57,15 +54,6 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 	public int getMenuResource() {
 		return menuRes;
 	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		menu.clear();
-		inflater.inflate(menuRes, menu);
-	}
-	
-	@Override
-	public void onPrepareOptionsMenu(Menu menu){}
 	
 	@Override
 	public boolean onOptionsMenuItemSelected(MenuItem item) {
