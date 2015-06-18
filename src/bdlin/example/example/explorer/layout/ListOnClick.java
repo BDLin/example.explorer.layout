@@ -59,7 +59,7 @@ public class ListOnClick implements OnItemClickListener {
 							.addToBackStack(null).commit();
 				} else {
 					aContent.setIFileList(aIFileArray);
-					aContent.updateArticleView(aIFileArray.get(position));
+					aContent.updateBrowseView(aIFileArray.get(position));
 				}// End of inner if-else condition
 
 			} else {

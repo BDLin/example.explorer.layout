@@ -19,7 +19,6 @@ package bdlin.example.example.explorer.layout;
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.TabFragment;
 import nkfust.selab.android.explorer.layout.processer.SetScreenSize;
-import nkfust.selab.android.explorer.layout.view.DecideFileView;
 import nkfust.selab.android.explorer.layout.view.VideoPlayerView;
 import poisondog.string.ExtractParentUrl;
 import android.content.res.Configuration;
@@ -61,9 +60,9 @@ public class MainActivity extends ActionBarActivity {
 				.findFragmentById(R.id.article_fragment);
 
 		sdFrag = new SdcardListFragment(this, R.drawable.folder_remote, R.menu.title_file_list,
-				article, Environment.getExternalStorageDirectory().getAbsolutePath());
+				article, Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
 		offFrag = new SdcardListFragment(this, R.drawable.download_folder_small_icon, R.menu.customer_menu1, 
-				article, Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download");
+				article, Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/");
 		presFrag = new PrefsFragment(this, R.drawable.android_settings);
 	}// End of onCreate
 

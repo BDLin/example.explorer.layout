@@ -14,8 +14,6 @@
  */
 package bdlin.example.example.explorer.layout;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,9 +114,7 @@ public class SdcardListFragment extends ListFragment implements TabView{
 		for(ComplexListItem item : array){
 			try {
 				iFileList.add(new LocalFileFactory().getFile((String)item.getData()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (URISyntaxException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -127,7 +123,7 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	public void updateMusicList(){
 		if (mContent.getMusicView() != null && 
 				new ExtractPath().process(tempPath).equals(mContent.getMusicView().getSongsPath()))
-			mContent.updateIFileList(iFileList);
+			mContent.updateMusicList();
 	}
 
 	public void reloadList() {
@@ -164,5 +160,11 @@ public class SdcardListFragment extends ListFragment implements TabView{
 				break;
 		}
 		return true;
+	}
+
+	@Override
+	public String getActionBarTitle() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

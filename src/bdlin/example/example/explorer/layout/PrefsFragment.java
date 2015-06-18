@@ -60,4 +60,10 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public String getActionBarTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
