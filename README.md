@@ -7,5 +7,6 @@ example.explorer.layout(Unfinished...Please wait for me finish it.)
 ![](https://github.com/BDLin/example.explorer.layout/raw/master/phone_demo1.png "Phone Demo1") ![](https://github.com/BDLin/example.explorer.layout/raw/master/phone_demo2.png "Phone Demo2")
 
 **Tablet**
+
 ![](https://github.com/BDLin/example.explorer.layout/raw/master/tablet_demo1.png "tablet Demo1")
 ![](https://github.com/BDLin/example.explorer.layout/raw/master/tablet_demo2.png "tablet Demo1")
