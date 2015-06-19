@@ -17,13 +17,6 @@ package bdlin.example.example.explorer.layout.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import bdlin.example.example.explorer.layout.R;
-import bdlin.example.example.explorer.layout.R.id;
-import bdlin.example.example.explorer.layout.listener.ListOnClick;
-import bdlin.example.example.explorer.layout.processor.CreateFolder;
-import bdlin.example.example.explorer.layout.processor.FileDoSort;
-import bdlin.example.example.explorer.layout.processor.SdcardFileData;
-
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.TabView;
 import poisondog.android.view.list.ComplexListItem;
@@ -38,6 +31,11 @@ import android.support.v4.app.ListFragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.listener.ListOnClick;
+import bdlin.example.example.explorer.layout.processor.CreateFolder;
+import bdlin.example.example.explorer.layout.processor.FileDoSort;
+import bdlin.example.example.explorer.layout.processor.SdcardFileData;
 
 public class SdcardListFragment extends ListFragment implements TabView{
 
@@ -77,7 +75,41 @@ public class SdcardListFragment extends ListFragment implements TabView{
 		// Set listener of list item
 		getListView().setOnItemClickListener(new ListOnClick(mContent, getActivity(), this));
 	}
+
+	@Override
+	public Fragment getFragment() {
+		return this;
+	}
+
+	@Override
+	public int getMenuResource() {
+		return menuRes;
+	}
 	
+	@Override
+	public boolean onOptionsMenuItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.create_folder:
+				new CreateFolder(getActivity(), this).DisplayDialog();
+				break;
+			case R.id.sort_by_name:
+				doSortByName();
+				reloadList();
+				break;
+			case R.id.sort_by_time:
+				doSortByTime();
+				reloadList();
+				break;
+		}
+		return true;
+	}
+
+	@Override
+	public String getActionBarTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void setAdapter(String path) throws Exception {
 		array.clear();
 		tempPath = path;
@@ -91,7 +123,7 @@ public class SdcardListFragment extends ListFragment implements TabView{
 		updateMusicList();
 		reloadList();
 	}
-
+	
 	public ImageButton getIndexButton() {
 		return remoteBtn;
 	}
@@ -139,39 +171,5 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	
 	public List<IFile> getIFileList(){
 		return iFileList;
-	}
-
-	@Override
-	public Fragment getFragment() {
-		return this;
-	}
-
-	@Override
-	public int getMenuResource() {
-		return menuRes;
-	}
-	
-	@Override
-	public boolean onOptionsMenuItemSelected(MenuItem item) {
-		switch (item.getItemId()){
-			case R.id.create_folder:
-				new CreateFolder(getActivity(), this).DisplayDialog();
-				break;
-			case R.id.sort_by_name:
-				doSortByName();
-				reloadList();
-				break;
-			case R.id.sort_by_time:
-				doSortByTime();
-				reloadList();
-				break;
-		}
-		return true;
-	}
-
-	@Override
-	public String getActionBarTitle() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
