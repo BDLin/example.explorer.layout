@@ -12,11 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package bdlin.example.example.explorer.layout;
+package bdlin.example.example.explorer.layout.view;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.R.drawable;
 
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.format.TimeFormatUtils;

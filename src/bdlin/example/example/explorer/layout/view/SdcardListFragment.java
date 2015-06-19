@@ -12,10 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package bdlin.example.example.explorer.layout;
+package bdlin.example.example.explorer.layout.view;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.R.id;
+import bdlin.example.example.explorer.layout.listener.ListOnClick;
+import bdlin.example.example.explorer.layout.processor.CreateFolder;
+import bdlin.example.example.explorer.layout.processor.FileDoSort;
+import bdlin.example.example.explorer.layout.processor.SdcardFileData;
 
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.TabView;

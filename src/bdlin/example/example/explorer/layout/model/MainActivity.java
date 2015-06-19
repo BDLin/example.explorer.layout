@@ -14,8 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package bdlin.example.example.explorer.layout;
+package bdlin.example.example.explorer.layout.model;
 
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.R.drawable;
+import bdlin.example.example.explorer.layout.R.id;
+import bdlin.example.example.explorer.layout.R.layout;
+import bdlin.example.example.explorer.layout.R.menu;
+import bdlin.example.example.explorer.layout.listener.ListOnClick;
+import bdlin.example.example.explorer.layout.view.PrefsFragment;
+import bdlin.example.example.explorer.layout.view.SdcardListFragment;
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.TabFragment;
 import nkfust.selab.android.explorer.layout.processer.SetScreenSize;
@@ -33,8 +41,8 @@ import android.widget.FrameLayout;
 
 public class MainActivity extends ActionBarActivity {
 
-	private TabFragment tabView;
-	private ContentFragment article;
+	private TabFragment mTabFragment;
+	private ContentFragment mContentFragment;
 	private SdcardListFragment sdFrag;
 	private SdcardListFragment offFrag;
 	private PrefsFragment presFrag;
@@ -46,39 +54,35 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.news_articles);
 
 		if (findViewById(R.id.fragment_container) != null) {
-			tabView = new TabFragment();
-			tabView.setFrameLayout((FrameLayout)findViewById(R.id.fragment_container));
+			//***Phone***//
+			mContentFragment =  new ContentFragment();
+			mTabFragment = new TabFragment();
+			mTabFragment.setFrameLayout((FrameLayout)findViewById(R.id.fragment_container));
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					             WindowManager.LayoutParams.FLAG_FULLSCREEN);
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.fragment_container, tabView).commit();
-		} else
-			tabView = (TabFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.headlines_fragment);
-
-		article = (ContentFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.article_fragment);
+			getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mTabFragment).commit();
+		} else{
+			//***Tablet***//
+			mTabFragment = (TabFragment) getSupportFragmentManager().findFragmentById(R.id.headlines_fragment);
+			mContentFragment = (ContentFragment) getSupportFragmentManager().findFragmentById(R.id.article_fragment);
+		}
+		mContentFragment.setTabFragment(mTabFragment);
 
 		sdFrag = new SdcardListFragment(this, R.drawable.folder_remote, R.menu.title_file_list,
-				article, Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
+				mContentFragment, Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
 		offFrag = new SdcardListFragment(this, R.drawable.download_folder_small_icon, R.menu.customer_menu1, 
-				article, Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/");
+				mContentFragment, Environment.getExternalStorageDirectory().getAbsolutePath() + "/Download/");
 		presFrag = new PrefsFragment(this, R.drawable.android_settings);
 	}// End of onCreate
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
 	public void onStart() {
 		super.onStart();
-		if (tabView.isFragmentStatePagerAdapterNull()) {
-			tabView.clean();
-			tabView.addTabView(sdFrag);
-			tabView.addTabView(offFrag);
-			tabView.addTabView(presFrag);
+		if (mTabFragment.isFragmentStatePagerAdapterNull()) {
+			mTabFragment.clean();
+			mTabFragment.addTabView(sdFrag);
+			mTabFragment.addTabView(offFrag);
+			mTabFragment.addTabView(presFrag);
 		}
 		setContentSize();
 	}
@@ -87,7 +91,7 @@ public class MainActivity extends ActionBarActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		// Checks the orientation of the screen
-		VideoPlayerView video = article.getVideoView();
+		VideoPlayerView video = mContentFragment.getVideoView();
 		if (video != null) {
 			setContentSize();
 			video.setScreenSize();
@@ -102,14 +106,9 @@ public class MainActivity extends ActionBarActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		return tabView.getCurrentTabView().onOptionsMenuItemSelected(item);
+		return mTabFragment.getCurrentTabView().onOptionsMenuItemSelected(item);
 	}// End of onOptionsItemSelected
 	
-	@Override
-	protected void onDestroy () {
-		super.onDestroy();
-	}
-
 	public void onBackPressed() {
 		if (findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null) {
 			getSupportActionBar().show();
@@ -117,7 +116,7 @@ public class MainActivity extends ActionBarActivity {
 			ListOnClick.initContent();
 			super.onBackPressed();
 		} else {
-			if (tabView.getCurrentFragment() == sdFrag) {
+			if (mTabFragment.getCurrentFragment() == sdFrag) {
 				if (sdFrag.isEqualsRootPath()) {
 					super.onBackPressed();
 				} else
@@ -126,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-			} else if (tabView.getCurrentFragment() == offFrag) {
+			} else if (mTabFragment.getCurrentFragment() == offFrag) {
 				if (offFrag.isEqualsRootPath()) {
 					super.onBackPressed();
 				} else
@@ -135,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-			} else if (tabView.getCurrentFragment() == presFrag) {
+			} else if (mTabFragment.getCurrentFragment() == presFrag) {
 				super.onBackPressed();
 			}// End of if-else if
 		}// End of if-else

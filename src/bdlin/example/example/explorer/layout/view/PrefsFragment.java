@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package bdlin.example.example.explorer.layout;
+package bdlin.example.example.explorer.layout.view;
 
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.R.menu;
+import bdlin.example.example.explorer.layout.R.xml;
 import nkfust.selab.android.explorer.layout.model.TabView;
 import android.content.Context;
 import android.os.Bundle;

@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name">
         <activity
-            android:name=".MainActivity"
+            android:name="bdlin.example.example.explorer.layout.model.MainActivity"
             android:label="@string/app_name" 
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat">
