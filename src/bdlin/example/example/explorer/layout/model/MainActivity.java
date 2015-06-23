@@ -16,14 +16,6 @@
  */
 package bdlin.example.example.explorer.layout.model;
 
-import bdlin.example.example.explorer.layout.R;
-import bdlin.example.example.explorer.layout.R.drawable;
-import bdlin.example.example.explorer.layout.R.id;
-import bdlin.example.example.explorer.layout.R.layout;
-import bdlin.example.example.explorer.layout.R.menu;
-import bdlin.example.example.explorer.layout.listener.ListOnClick;
-import bdlin.example.example.explorer.layout.view.PrefsFragment;
-import bdlin.example.example.explorer.layout.view.SdcardListFragment;
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
 import nkfust.selab.android.explorer.layout.model.TabFragment;
 import nkfust.selab.android.explorer.layout.processer.SetScreenSize;
@@ -38,6 +30,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.listener.OpenFileListener;
+import bdlin.example.example.explorer.layout.view.PrefsFragment;
+import bdlin.example.example.explorer.layout.view.SdcardListFragment;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -78,13 +74,13 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		setContentSize();
 		if (mTabFragment.isFragmentStatePagerAdapterNull()) {
 			mTabFragment.clean();
 			mTabFragment.addTabView(sdFrag);
 			mTabFragment.addTabView(offFrag);
 			mTabFragment.addTabView(presFrag);
 		}
-		setContentSize();
 	}
 
 	@Override
@@ -110,10 +106,10 @@ public class MainActivity extends ActionBarActivity {
 	}// End of onOptionsItemSelected
 	
 	public void onBackPressed() {
-		if (findViewById(R.id.fragment_container) != null && ListOnClick.getContent() != null) {
+		if (findViewById(R.id.fragment_container) != null && OpenFileListener.getContent() != null && !mTabFragment.isVisible()){
 			getSupportActionBar().show();
 			getSupportFragmentManager().beginTransaction().show(TabFragment.getTabFragment()).commit();
-			ListOnClick.initContent();
+			OpenFileListener.initContent();
 			super.onBackPressed();
 		} else {
 			if (mTabFragment.getCurrentFragment() == sdFrag) {

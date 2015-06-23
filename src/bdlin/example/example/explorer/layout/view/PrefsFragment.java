@@ -14,9 +14,6 @@
  */
 package bdlin.example.example.explorer.layout.view;
 
-import bdlin.example.example.explorer.layout.R;
-import bdlin.example.example.explorer.layout.R.menu;
-import bdlin.example.example.explorer.layout.R.xml;
 import nkfust.selab.android.explorer.layout.model.TabView;
 import android.content.Context;
 import android.os.Bundle;
@@ -24,16 +21,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.preference.PreferenceFragment;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import bdlin.example.example.explorer.layout.R;
 
 public class PrefsFragment extends PreferenceFragment implements TabView {
 
-	private ImageButton settingBtn;
-	private int menuRes;
+	private ImageButton mSettingBtn;
+	private int mMenuRes;
 
 	public PrefsFragment(Context context, int imageID) {
-		settingBtn = new ImageButton(context);
-		settingBtn.setImageResource(imageID);
-		this.menuRes = R.menu.customer_menu2;
+		mSettingBtn = new ImageButton(context);
+		mSettingBtn.setImageResource(imageID);
+		mMenuRes = R.menu.customer_menu2;
 		
 	}
 
@@ -45,7 +43,7 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 	}
 
 	public ImageButton getIndexButton() {
-		return settingBtn;
+		return mSettingBtn;
 	}
 
 	@Override
@@ -55,7 +53,7 @@ public class PrefsFragment extends PreferenceFragment implements TabView {
 
 	@Override
 	public int getMenuResource() {
-		return menuRes;
+		return mMenuRes;
 	}
 	
 	@Override

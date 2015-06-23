@@ -30,9 +30,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import bdlin.example.example.explorer.layout.R;
-import bdlin.example.example.explorer.layout.listener.ListOnClick;
+import bdlin.example.example.explorer.layout.listener.OpenFileListener;
 import bdlin.example.example.explorer.layout.processor.CreateFolder;
 import bdlin.example.example.explorer.layout.processor.FileDoSort;
 import bdlin.example.example.explorer.layout.processor.SdcardFileData;
@@ -42,7 +44,7 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	private List<ComplexListItem> array;
 	private List<IFile> iFileList;
 	private ImageButton remoteBtn;
-	private ContentFragment mContent;
+	private ContentFragment mContentFragment;
 	private String tempPath;
 	private String rootPath;
 	private int menuRes;
@@ -50,7 +52,7 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	public SdcardListFragment(Context context, int img_id, int menuRes,
 			ContentFragment content, String filePath) {
 		this.menuRes = menuRes;
-		mContent = content;
+		mContentFragment = content;
 		rootPath = filePath;
 		tempPath = filePath;
 		array = new ArrayList<ComplexListItem>();
@@ -73,7 +75,14 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	public void onViewCreated (View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		// Set listener of list item
-		getListView().setOnItemClickListener(new ListOnClick(mContent, getActivity(), this));
+		final SdcardListFragment fragment = this;
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				new OpenFileListener(mContentFragment, getActivity(), fragment).open(position);
+			}
+		});
 	}
 
 	@Override
@@ -160,9 +169,9 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	}
 	
 	public void updateMusicList(){
-		if (mContent.getMusicView() != null && 
-				new ExtractPath().process(tempPath).equals(mContent.getMusicView().getSongsPath()))
-			mContent.updateMusicList();
+		if (mContentFragment.getMusicView() != null && 
+				new ExtractPath().process(tempPath).equals(mContentFragment.getMusicView().getSongsPath()))
+			mContentFragment.updateMusicList();
 	}
 
 	public void reloadList() {

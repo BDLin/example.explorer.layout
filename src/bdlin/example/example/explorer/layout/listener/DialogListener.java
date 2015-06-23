@@ -14,11 +14,6 @@
  */
 package bdlin.example.example.explorer.layout.listener;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import bdlin.example.example.explorer.layout.view.SdcardListFragment;
-
 import poisondog.vfs.IFile;
 import poisondog.vfs.LocalFileFactory;
 import android.app.AlertDialog;
@@ -26,18 +21,19 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.EditText;
+import bdlin.example.example.explorer.layout.view.SdcardListFragment;
 
 public class DialogListener implements DialogInterface.OnClickListener {
 
-	private EditText editText;
-	private Context context;
+	private EditText mEditText;
+	private Context mContext;
 	private SdcardListFragment sdFrag;
 
-	public DialogListener(Context context, SdcardListFragment sdFrag,
+	public DialogListener(Context context, SdcardListFragment frag,
 			EditText editText) {
-		this.sdFrag = sdFrag;
-		this.context = context;
-		this.editText = editText;
+		sdFrag = frag;
+		mContext = context;
+		mEditText = editText;
 	}
 
 	@Override
@@ -45,10 +41,8 @@ public class DialogListener implements DialogInterface.OnClickListener {
 		IFile file = null;
 		try {
 			file = new LocalFileFactory().getFile(sdFrag.getCurrentPath() + "/"
-					+ editText.getText() + "/");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} catch (URISyntaxException e1) {
+					+ mEditText.getText() + "/");
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		try {
@@ -60,7 +54,7 @@ public class DialogListener implements DialogInterface.OnClickListener {
 					e.printStackTrace();
 				}
 			} else {
-				Builder dialogError = new AlertDialog.Builder(context);
+				Builder dialogError = new AlertDialog.Builder(mContext);
 				dialogError.setTitle("Error!!")
 						.setMessage("The folder name is repeat!!")
 						.setNegativeButton("OK", null).show();

@@ -24,20 +24,20 @@ import poisondog.vfs.LocalFolder;
 
 public class SdcardFileData {
 
-	private String filePath;
-	private LocalFolder file;
-	private List<IFile> files;
-	private LocalFileFactory factory;
+	private String mFilePath;
+	private LocalFolder mFile;
+	private List<IFile> mFiles;
+	private LocalFileFactory mFactory;
 
 	public SdcardFileData(String filePath) throws IOException,
 			URISyntaxException {
-		this.filePath = filePath + "/";
-		factory = new LocalFileFactory();
-		file = (LocalFolder) factory.getFile(this.filePath);
-		files = file.getChildren();
+		mFilePath = filePath + "/";
+		mFactory = new LocalFileFactory();
+		mFile = (LocalFolder) mFactory.getFile(mFilePath);
+		mFiles = mFile.getChildren();
 	}// End of SdcardFileData construct
 
 	public List<IFile> getFileList() {
-		return files;
+		return mFiles;
 	}// End of getFileList function
 }// End of SdcardFileData class

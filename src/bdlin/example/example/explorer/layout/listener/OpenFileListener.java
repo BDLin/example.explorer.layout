@@ -17,58 +17,53 @@ package bdlin.example.example.explorer.layout.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import bdlin.example.example.explorer.layout.R;
-import bdlin.example.example.explorer.layout.R.id;
-import bdlin.example.example.explorer.layout.view.SdcardListFragment;
-
 import nkfust.selab.android.explorer.layout.model.ContentFragment;
+import nkfust.selab.android.explorer.layout.model.TabFragment;
 import poisondog.vfs.FileType;
 import poisondog.vfs.IFile;
 import poisondog.vfs.LocalFolder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import bdlin.example.example.explorer.layout.R;
+import bdlin.example.example.explorer.layout.view.SdcardListFragment;
 
-public class ListOnClick implements OnItemClickListener {
+public class OpenFileListener{
 
-	private static ContentFragment aContent;
-	private SdcardListFragment fileData;
-	private FragmentActivity activity;
+	private static ContentFragment mContentFragment;
+	private SdcardListFragment mFragment;
+	private FragmentActivity mActivity;
 
-	public ListOnClick(ContentFragment article, FragmentActivity activity,
-			SdcardListFragment fileData) {
-		this.fileData = fileData;
-		this.activity = activity;
-		aContent = article;
+	public OpenFileListener(ContentFragment content, FragmentActivity activity,
+			SdcardListFragment fragment) {
+		mContentFragment = content;
+		mActivity = activity;
+		mFragment = fragment;
 	}// End of ListOnClick construct
 	
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void open(int position) {
 		List<IFile> aIFileArray = new ArrayList<IFile>();
-		aIFileArray.addAll(fileData.getIFileList());
+		aIFileArray.addAll(mFragment.getIFileList());
 		try {
 			if (aIFileArray.get(position).getType() == FileType.DATA) {
-
-				if (aContent == null) {
-					aContent = new ContentFragment();
-					aContent.setIFile(aIFileArray.get(position));
-					aContent.setIFileList(aIFileArray);
+				if (TabFragment.getFrameLayout() != null) {
+					mContentFragment.setTabFragment((TabFragment)TabFragment.getTabFragment());
+					mContentFragment.setIFile(aIFileArray.get(position));
+					mContentFragment.setIFileList(aIFileArray);
 					Bundle args = new Bundle();
 					args.putInt("position", position);
-					aContent.setArguments(args);
-					activity.getSupportFragmentManager().beginTransaction()
-							.add(R.id.fragment_container, aContent)
+					mContentFragment.setArguments(args);
+					mContentFragment.setReadArgument(false);
+					mActivity.getSupportFragmentManager().beginTransaction()
+							.add(R.id.fragment_container, mContentFragment)
 							.addToBackStack(null).commit();
 				} else {
-					aContent.setIFileList(aIFileArray);
-					aContent.updateBrowseView(aIFileArray.get(position));
+					mContentFragment.setIFileList(aIFileArray);
+					mContentFragment.updateBrowseView(aIFileArray.get(position));
 				}// End of inner if-else condition
 
 			} else {
 				LocalFolder folder = (LocalFolder) aIFileArray.get(position);
-				fileData.setAdapter(folder.getUrl());
+				mFragment.setAdapter(folder.getUrl());
 			}// End of if-else condition
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,10 +71,10 @@ public class ListOnClick implements OnItemClickListener {
 	}// End of onItemClick Function
 	
 	public static void initContent() {
-		aContent = null;
+		mContentFragment = null;
 	}
 	
 	public static ContentFragment getContent() {
-		return aContent;
+		return mContentFragment;
 	}
 }// End of ListOnClick Class

@@ -23,22 +23,22 @@ import android.widget.EditText;
 
 public class CreateFolder {
 
-	private EditText editText;
-	private Context context;
-	private DialogListener listener;
+	private EditText mEditText;
+	private Context mContext;
+	private DialogListener mListener;
 
 	public CreateFolder(Context context, SdcardListFragment sdFrag) {
-		this.context = context;
-		editText = new EditText(context);
-		editText.setHint("NewFolder");
-		listener = new DialogListener(context, sdFrag, editText);
+		mContext = context;
+		mEditText = new EditText(context);
+		mEditText.setHint("NewFolder");
+		mListener = new DialogListener(context, sdFrag, mEditText);
 	}
 
 	public void DisplayDialog() {
-		Builder dialog = new AlertDialog.Builder(context);
+		Builder dialog = new AlertDialog.Builder(mContext);
 		dialog.setTitle("Create Folder")
-				.setMessage("Please input the folder name.").setView(editText)
+				.setMessage("Please input the folder name.").setView(mEditText)
 				.setNegativeButton("Cancel", null)
-				.setPositiveButton("Done", listener).show();
+				.setPositiveButton("Done", mListener).show();
 	}// End of DisplayDialog function
 }// End of CreateFolder class

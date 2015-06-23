@@ -14,12 +14,7 @@
  */
 package bdlin.example.example.explorer.layout.view;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
-
-import bdlin.example.example.explorer.layout.R;
-import bdlin.example.example.explorer.layout.R.drawable;
 
 import poisondog.android.view.list.ComplexListItem;
 import poisondog.format.TimeFormatUtils;
@@ -30,19 +25,20 @@ import poisondog.vfs.IFile;
 import poisondog.vfs.LocalFolder;
 import android.widget.ImageView;
 import android.widget.TextView;
+import bdlin.example.example.explorer.layout.R;
 
 public class SdcardFileTransform implements ComplexListItem {
 
-	private IFile file;
+	private IFile mFile;
 
 	public SdcardFileTransform(IFile file) {
-		this.file = file;
+		mFile = file;
 	}
 
 	@Override
 	public String getTitle() {
 		try {
-			return new ExtractFileName().process(URLDecoder.decode(file.getUrl()));
+			return new ExtractFileName().process(URLDecoder.decode(mFile.getUrl()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,7 +47,7 @@ public class SdcardFileTransform implements ComplexListItem {
 
 	public Long getTime() {
 		try {
-			return file.getLastModifiedTime();
+			return mFile.getLastModifiedTime();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,7 +62,7 @@ public class SdcardFileTransform implements ComplexListItem {
 	@Override
 	public String getData() {
 		try {
-			return new ExtractPath().process(URLDecoder.decode(file.getUrl()));
+			return new ExtractPath().process(URLDecoder.decode(mFile.getUrl()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,7 +76,7 @@ public class SdcardFileTransform implements ComplexListItem {
 	public void setSubTitle(TextView view) {
 		try {
 			view.setText(TimeFormatUtils.toString(TimeFormatUtils.SIMPLE,
-					file.getLastModifiedTime()));
+					mFile.getLastModifiedTime()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -92,19 +88,15 @@ public class SdcardFileTransform implements ComplexListItem {
 	@Override
 	public void setImage(ImageView view) {
 		try {
-			if (file.getType() == FileType.DATA)
+			if (mFile.getType() == FileType.DATA)
 				view.setImageResource(R.drawable.file_blue_48);
 			else {
-				LocalFolder folder = (LocalFolder) file;
+				LocalFolder folder = (LocalFolder) mFile;
 				if (folder.getChildren().size() == 0)
 					view.setImageResource(R.drawable.folder_empty);
 				else
 					view.setImageResource(R.drawable.folder_documents);
 			}// End of if-else condition
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}// End of try-catch
