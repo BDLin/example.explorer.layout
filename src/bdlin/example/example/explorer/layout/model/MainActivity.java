@@ -83,6 +83,14 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 
+	public void setContentSize(){
+		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+		if (findViewById(R.id.fragment_container) == null) 
+			SetScreenSize.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
+		else
+			SetScreenSize.setContentSize(display.getHeight(),display.getWidth());
+	}
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -135,12 +143,4 @@ public class MainActivity extends ActionBarActivity {
 			}// End of if-else if
 		}// End of if-else
 	}// End of onBackPressed
-	
-	public void setContentSize(){
-		Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-		if (findViewById(R.id.fragment_container) == null) 
-			SetScreenSize.setContentSize(display.getHeight(),display.getWidth() * 2 / 3);
-		else
-			SetScreenSize.setContentSize(display.getHeight(),display.getWidth());
-	}
 }// End of MainActivity
