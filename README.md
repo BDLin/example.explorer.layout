@@ -1,6 +1,6 @@
 example.explorer.layout
 =======================
-此 Example 可相容 *Phone* 和 *Tablet* ，個別有呈現的方式，如下圖：
+此 Example 是瀏覽本地端的檔案，可讀取photo、video、music檔，並且此程式可相容 *Phone* 和 *Tablet* 兩個平台 ，個別有呈現的方式，如下圖：
 
 **Phone**
 
@@ -58,3 +58,7 @@ Library
 Reference
 ---------
 [Building a Flexible UI](http://developer.android.com/training/basics/fragments/fragment-ui.html)
+
+[Video view](http://www.brightec.co.uk/blog/custom-android-media-controller)
+
+[Music view](http://www.androidhive.info/2012/03/android-building-audio-player-tutorial/)
