@@ -171,7 +171,7 @@ public class SdcardListFragment extends ListFragment implements TabView{
 	public void updateMusicList(){
 		if (mContentFragment.getMusicView() != null && 
 				new ExtractPath().process(tempPath).equals(mContentFragment.getMusicView().getSongsPath()))
-			mContentFragment.updateMusicList();
+			mContentFragment.updateTabListForMusicPlayerView();
 	}
 
 	public void reloadList() {
